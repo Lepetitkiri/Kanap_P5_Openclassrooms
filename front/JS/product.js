@@ -1,0 +1,1 @@
+/* JS page linked to product.html */
