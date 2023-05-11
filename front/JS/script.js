@@ -17,12 +17,12 @@ function productCreation(product) {
     /* insertion de l'élèment <article> dans le <a> : */
     let productArticle = document.createElement('article');
     productA.appendChild(productArticle);
-    productArticle.innerText = ``
+    productArticle.innerText = ``;
 
     /* insertion de l'élèment <img> dans l'<article> : */
     let productImage = document.createElement("img");
     productArticle.appendChild(productImage);
-    productImage.src = `src=".../back/images/${product[i].imageUrl}`;
+    productImage.src = product[i].imageUrl;
     
     /* insertion de l'élèment <h3> dans <a> : */
     let productName = document.createElement("h3");
@@ -35,10 +35,6 @@ function productCreation(product) {
     productDescription.innerText = product[i].description;
     }
 }
-
-    
-
-
 
 
 
