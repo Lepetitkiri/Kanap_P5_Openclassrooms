@@ -23,6 +23,7 @@ function productCreation(product) {
     let productImage = document.createElement("img");
     productArticle.appendChild(productImage);
     productImage.src = product[i].imageUrl;
+    productImage.alt = product[i].altTxt;
     
     /* insertion de l'élèment <h3> dans <a> : */
     let productName = document.createElement("h3");
@@ -35,8 +36,3 @@ function productCreation(product) {
     productDescription.innerText = product[i].description;
     }
 }
-
-
-
-
-
