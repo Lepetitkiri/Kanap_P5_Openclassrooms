@@ -16,3 +16,9 @@ if (url.includes(`http`)) {
    const urlErrorDate = Date.now();
    console.log(`Une erreur s'est produite lors de la redirection de l'utilisateur. Date de l'évenement : ${urlErrorDate}`);
 }
+
+
+/* Récupération des produits depuis l'API : */
+const product = fetch(`http://localhost:3000/api/products/${urlId}`)
+    .then(product => product.json())
+    .then(function(product) {displayProductPage(product)});
