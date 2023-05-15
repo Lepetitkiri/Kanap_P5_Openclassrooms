@@ -3,4 +3,5 @@
 /* Récupération du href de la page */
 const url = window.location.href;
 /* Extraction de l'ID depuis le href de la page */
-const urlId = url.split('=');
+const urlIdsSplited = url.split('=');
+const urlId = urlIdsSplited[1];
