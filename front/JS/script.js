@@ -3,16 +3,16 @@
 /* Récupération des produits depuis l'API : */
 const product = fetch('http://localhost:3000/api/products')
     .then(product => product.json())
-    .then(function(product) {productCreation(product)});
+    .then(function(product) {displayProducts(product)});
 
     /* Création des produits */
-function productCreation(product) {
+function displayProducts(product) {
     for ( i = 0 ; i < product.length; i++ ) {
 
     /* insertion de l'élèment <a> : */ 
     let productA = document.createElement("a");
     document.querySelector(".items").appendChild(productA);
-    productA.href = `./product.html?id=${i}`
+    productA.href = `./product.html?id=${product[i]._id}`
 
     /* insertion de l'élèment <article> dans le <a> : */
     let productArticle = document.createElement('article');
