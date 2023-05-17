@@ -21,6 +21,7 @@ if (url.includes(`http`)) {
 /* Récupération des produits depuis l'API : */
 const product = fetch(`http://localhost:3000/api/products/${urlId}`)
     .then(product => product.json())
+<<<<<<< HEAD
     .then(function(product) {displayProductPage(product)});
 
 
@@ -53,3 +54,6 @@ function displayProductPage(product) {
     }
     
 }
+=======
+    .then(function(product) {displayProductPage(product)});
+>>>>>>> refs/remotes/origin/main
