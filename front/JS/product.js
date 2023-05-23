@@ -47,4 +47,36 @@ function displayProductPage(product) {
 
 
 
+/* Recupérer les infos des produits sélectionnés : */
 
+/* Selection des balises */
+const addToCartButton = document.getElementById(`addToCart`); 
+const selectedProductColorbutton = document.getElementById(`colors`);  
+const selectedProductQuantitybutton = document.getElementById(`quantity`); 
+
+/* Création des variables */
+let color = ""; 
+let quantity = "";
+
+/* Récupération des datas au click sur les balises */
+selectedProductColorbutton.addEventListener('click', (e) => { 
+    color = e.target.value;
+})
+
+selectedProductQuantitybutton.addEventListener('click', (e) => { 
+    quantity = e.target.value;
+})
+
+/* Au click sur "ajouter au panier", on récupère les datas stockées dans color et quantity et on les stocke dans le local storage */
+addToCartButton.addEventListener('click', (e) => {
+    if (color === "") {
+        window.alert(`veuillez selectionner une couleur SVP`);
+    } else {
+        if (quantity <= 0 || quantity > 100) {
+            window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
+    } else {
+        localStorage["id"] = urlId;
+        localStorage["quantity"] = quantity;
+        localStorage["color"] = color;
+        window.location.replace(`./cart.html`) /* Redirection vers la page panier */
+    } } });

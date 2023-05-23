@@ -1,1 +1,0 @@
-/* JS page linked to cart.html */
