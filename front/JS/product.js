@@ -11,8 +11,7 @@ const urlId = urlIdsSplited[1];
 /* Récupération des produits depuis l'API : */
 const product = fetch(`http://localhost:3000/api/products/${urlId}`)
     .then(product => product.json())
-    .then(function(product) {displayProductPage(product)});
-
+    .then(function(product) {displayProductPage(product)})
 
         /* Insertion des datas du produit sélectionné dans la page */
 function displayProductPage(product) {
@@ -42,6 +41,7 @@ function displayProductPage(product) {
         productColor.innerHTML = product.colors[i];
     }
     
+    
 }
 
 
@@ -68,15 +68,15 @@ selectedProductQuantitybutton.addEventListener('click', (e) => {
 })
 
 /* Au click sur "ajouter au panier", on récupère les datas stockées dans color et quantity et on les stocke dans le local storage */
+    
 addToCartButton.addEventListener('click', (e) => {
-    if (color === "") {
-        window.alert(`veuillez selectionner une couleur SVP`);
-    } else {
-        if (quantity <= 0 || quantity > 100) {
-            window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
-    } else {
-        localStorage["id"] = urlId;
-        localStorage["quantity"] = quantity;
-        localStorage["color"] = color;
-        window.location.replace(`./cart.html`) /* Redirection vers la page panier */
-    } } });
+        if (color === "") {
+            window.alert(`veuillez selectionner une couleur SVP`);
+        } else {
+            if (quantity <= 0 || quantity > 100) {
+                window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
+        } else {
+            let cart = {"id": urlId, "color": color, "quantity": quantity};
+            localStorage.setItem("cart" , JSON.stringify(cart)); /* Stockage dans le local storage sour le nom cart et passage en JSON */
+            window.location.replace(`./cart.html`) /* Redirection vers la page panier */
+        } } });
