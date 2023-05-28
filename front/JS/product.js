@@ -67,6 +67,7 @@ selectedProductQuantitybutton.addEventListener('click', (e) => {
     quantity = e.target.value;
 })
 
+
 /* Au click sur "ajouter au panier", on récupère les datas stockées dans color et quantity et on les stocke dans le local storage */
     
 addToCartButton.addEventListener('click', (e) => {
@@ -76,7 +77,10 @@ addToCartButton.addEventListener('click', (e) => {
             if (quantity <= 0 || quantity > 100) {
                 window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
         } else {
-            let cart = {"id": urlId, "color": color, "quantity": quantity};
-            localStorage.setItem("cart" , JSON.stringify(cart)); /* Stockage dans le local storage sour le nom cart et passage en JSON */
+            /* Creation d'un objet pour stocker les données du canapé choisi */
+            let cart = {"colors": color, "id": urlId, "quantity": quantity};
+            localStorage.setItem(`${urlId} ${color}` , JSON.stringify(`${urlId} ${color}`)); /* Stockage dans le local storage et passage en JSON */
             window.location.replace(`./cart.html`) /* Redirection vers la page panier */
         } } });
+
+
