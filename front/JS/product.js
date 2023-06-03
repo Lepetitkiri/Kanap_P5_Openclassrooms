@@ -9,8 +9,8 @@ const urlId = urlIdsSplited[1];
 
 
 /* Récupération des produits depuis l'API : */
-const product = fetch(`http://localhost:3000/api/products/${urlId}`)
-    .then(product => product.json())
+fetch(`http://localhost:3000/api/products/${urlId}`)
+    .then(response => response.json())
     .then(function(product) {displayProductPage(product)})
 
         /* Insertion des datas du produit sélectionné dans la page */
@@ -68,7 +68,25 @@ selectedProductQuantitybutton.addEventListener('click', (e) => {
 })
 
 
-/* Au click sur "ajouter au panier", on récupère les datas stockées dans color et quantity et on les stocke dans le local storage */
+
+function addItemToCart() {
+    let key = `${urlId} ${color}`; /* Clé d'identification du produit  sélectionné */
+    let cart = JSON.parse(localStorage.getItem(key)) || []; /* Récupération du panier depuis le local storage, si null, renvoi un array vide */
+    let existingItem = cart.find(item => item.id === urlId && item.color === color); /* Booléen permettant de savoir si le produit est déjà dans le panier */
+
+    if (existingItem) {
+        /* si le produit existe dans le panier : */
+        existingItem.quantity = parseInt(existingItem.quantity) + parseInt(quantity); /* Modification de la quantité */
+        localStorage.setItem(key, JSON.stringify(cart)); /* Enregistrement dans le local storage */
+    } else {
+        /* si le produit n'existe pas encore dans le panier : */
+        cart.push({ "id": urlId, "color": color, "quantity": quantity }); /* Ajout de la valeur du produit dans l'array vide */
+        localStorage.setItem(key, JSON.stringify(cart)) /* Ajout au local storage */
+    }
+}
+
+
+/* Au click sur "ajouter au panier", stockage des datas dans le local storage */
     
 addToCartButton.addEventListener('click', (e) => {
         if (color === "") {
@@ -77,10 +95,9 @@ addToCartButton.addEventListener('click', (e) => {
             if (quantity <= 0 || quantity > 100) {
                 window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
         } else {
-            /* Creation d'un objet pour stocker les données du canapé choisi */
-            let cart = {"colors": color, "id": urlId, "quantity": quantity};
-            localStorage.setItem(`${urlId} ${color}` , JSON.stringify(`${urlId} ${color}`)); /* Stockage dans le local storage et passage en JSON */
+            addItemToCart("key");
             window.location.replace(`./cart.html`) /* Redirection vers la page panier */
-        } } });
+            }         
+        }  });
 
 
