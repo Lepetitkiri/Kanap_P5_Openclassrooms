@@ -72,16 +72,19 @@ selectedProductQuantitybutton.addEventListener('click', (e) => {
 function addItemToCart() {
     let key = `${urlId} ${color}`; /* Clé d'identification du produit  sélectionné */
     let cart = JSON.parse(localStorage.getItem(key)) || []; /* Récupération du panier depuis le local storage, si null, renvoi un array vide */
-    let existingItem = cart.find(item => item.id === urlId && item.color === color); /* Booléen permettant de savoir si le produit est déjà dans le panier */
+
+    /* On compare si il existe déjà cet element au panier : */
+    let localStorageExistingKeys = Object.keys(localStorage); /* Pour cela on récupère les elements du local storage sous forme d'array comprenant id / couleur*/
+    let existingItem = localStorageExistingKeys.includes(urlId +" " + color); /* Renvoi un booléen indiquant si le produit est déjà dans le panier ou non */
 
     if (existingItem) {
         /* si le produit existe dans le panier : */
-        existingItem.quantity = parseInt(existingItem.quantity) + parseInt(quantity); /* Modification de la quantité */
-        localStorage.setItem(key, JSON.stringify(cart)); /* Enregistrement dans le local storage */
+        existingItemQuantity = parseInt(cart) + parseInt(quantity); /* Modification de la quantité */
+        localStorage.setItem(key, JSON.stringify(existingItemQuantity)); /* Enregistrement dans le local storage */
     } else {
         /* si le produit n'existe pas encore dans le panier : */
-        cart.push({ "id": urlId, "color": color, "quantity": quantity }); /* Ajout de la valeur du produit dans l'array vide */
-        localStorage.setItem(key, JSON.stringify(cart)) /* Ajout au local storage */
+        cart.push(parseInt(quantity)); /* Ajout de la valeur du produit dans l'array vide */
+        localStorage.setItem(key, JSON.stringify(parseInt(cart))) /* Ajout au local storage */
     }
 }
 

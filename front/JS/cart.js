@@ -6,13 +6,15 @@ function getAllJSONDataFromLocalStorage() {
   const data = {};
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    console.log(key);
+   /* console.log(key); */
     const value = localStorage.getItem(key);
-    console.log(value);
+    /* console.log(value); */
       const parsedValue = JSON.parse(value);
-      data[key] = parsedValue;
+      /*console.log(parsedValue); */
+      data[key] = value;
   }
   return data;
+  console.log(data);
 }
 
 const allJSONData = getAllJSONDataFromLocalStorage();
