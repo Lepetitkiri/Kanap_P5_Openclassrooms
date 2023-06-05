@@ -1,24 +1,42 @@
 /* JS page linked to cart.html */
 
+/* Fonction de récupération des données depuis le local storage */
+function getAllDatasFromLocalStorage() {
+  let arrayOfAllDatasFromLocalStorage = []; /* Création d'un array pour accueillir les données du panier */
 
-/* Récupération des données depuis le local storage */
-function getAllJSONDataFromLocalStorage() {
-  const data = {};
   for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-   /* console.log(key); */
-    const value = localStorage.getItem(key);
-    /* console.log(value); */
-      const parsedValue = JSON.parse(value);
-      /*console.log(parsedValue); */
-      data[key] = value;
-  }
-  return data;
-  console.log(data);
-}
+    const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
+    const keySplited = key.split(' '); /* Séparation de la clé en deux string */
+    
+    /* Stockage des id, couleurs et quantités existantes dans des constantes */
+    const idInTheLocalStorage = keySplited[0];
+    const colorInTheLocalStorage =  keySplited[1];
+    const quantityInTheLocalStorage = JSON.parse(localStorage.getItem(key));
 
-const allJSONData = getAllJSONDataFromLocalStorage();
-/* console.table(allJSONData); */
+    /* Création d'un objet pour chaque element contenu dans le local storage */
+    objectInTheLocalStorage = {
+    "color": colorInTheLocalStorage,
+    "_id": idInTheLocalStorage,
+    "name": "",
+    "price": "",
+    "imageUrl": "",
+    "description": "",
+    "altTxt": "",
+    "quantity": quantityInTheLocalStorage
+    };
+    arrayOfAllDatasFromLocalStorage.push(objectInTheLocalStorage); /* Stockage des infos dans l'array créé en début de fonction */
+  }
+  return arrayOfAllDatasFromLocalStorage;
+};
+
+const cart = getAllDatasFromLocalStorage();
+
+
+
+
+
+
+
 
 
   
@@ -27,17 +45,9 @@ const allJSONData = getAllJSONDataFromLocalStorage();
 /* Récupération des produits depuis l'API : */
 fetch(`http://localhost:3000/api/products`)
     .then(response => response.json())
-    .then(products => getCart(products))
+    /*.then(products => getCart(products)) */
     /* .then(products => displayProductsByApi(products));
 
-    
-  /* Récupération du panier */
-  function getCart(products) {
-    let cart = JSON.parse(localStorage.getItem("key")) || [];
-    /* le panier est vide */
-    console.log(cart["77711f0e466b4ddf953f677d30b0efc9 Grey"]);
-    return cart;
-};
 
 
 
