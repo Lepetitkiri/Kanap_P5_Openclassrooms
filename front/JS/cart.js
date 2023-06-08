@@ -33,8 +33,56 @@ const cart = getAllDatasFromLocalStorage();
 
 
 
+/* Récupération des infos des produits du cart depuis l'API : */
+const allIdFromCartWithDuplicate = cart.map( cart => cart._id); /* création d'une map pour récupérer tous les id du cart */
+let allIdFromCart = [...new Set(allIdFromCartWithDuplicate)]; /* Suppression des doublons grace à la class Set */
 
 
+for ( i = 0 ; i < allIdFromCart.length; i++ ) {
+    product = fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
+    .then(response => response.json())
+  }
+
+
+
+
+   /* .then(function(product) {displayProducts(product)});
+
+
+/*.then (response => response.json())*/
+
+
+/*console.table(allIdFromCart);
+console.table(cart); */
+
+
+
+
+
+
+/*for (let i = 0; i < allIdFromCart.length; i++) {
+  fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
+  .then(response => response.json())
+  .then (products => recoveringTheMissingDatasOfCartsObjects(products));
+  fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
+ /* .then(console.table(cart));*/
+  /*.then(products => displayProductsByApi(products))*/
+/*} 
+
+
+/* Récupération des infos manquantes sur les produits du panier */
+/*function recoveringTheMissingDatasOfCartsObjects(products) {
+  /*console.table(products)*/
+  /*for (let i = 0; i < cart.length; i++) {
+    
+    if (cart[i]._id === products.id) {
+      cart[i].name = products.name;
+      
+    }
+    
+  }
+
+};
 
 
 
@@ -42,10 +90,8 @@ const cart = getAllDatasFromLocalStorage();
   
 
 
-/* Récupération des produits depuis l'API : */
-fetch(`http://localhost:3000/api/products`)
-    .then(response => response.json())
-    /*.then(products => getCart(products)) */
+
+
     /* .then(products => displayProductsByApi(products));
 
 
@@ -106,7 +152,7 @@ function displayProductsByCart(cart) {
 };
 
 /* Datas récupérées depuis l'API */
-/*function displayProductsByApi(product) {
+function displayProductsByApi(product) {
   for ( i = 0 ; i < product.length; i++ ) {
 
   /* Création d'une <img> contenant les infos produit */
@@ -149,8 +195,8 @@ function displayProductsByCart(cart) {
   divArticle4.appendChild(divArticle6);
   divArticle6.classList.add("cart__item__content__settings__delete");
   divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`; */
-        /* }
-}; */
+        }
+}; 
 
 
 
