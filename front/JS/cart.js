@@ -37,62 +37,47 @@ const cart = getAllDatasFromLocalStorage();
 const allIdFromCartWithDuplicate = cart.map( cart => cart._id); /* création d'une map pour récupérer tous les id du cart */
 let allIdFromCart = [...new Set(allIdFromCartWithDuplicate)]; /* Suppression des doublons grace à la class Set */
 
-
+const productPromises = [];
 for ( i = 0 ; i < allIdFromCart.length; i++ ) {
     product = fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
     .then(response => response.json())
+    productPromises.push(product);
   }
 
 
+/* Fonction permettant de remplir les infos manquantes de cart depuis l'api */
+function informationsCompilationFromApiandCart(product) {
 
-
-   /* .then(function(product) {displayProducts(product)});
-
-
-/*.then (response => response.json())*/
-
-
-/*console.table(allIdFromCart);
-console.table(cart); */
-
-
-
-
-
-
-/*for (let i = 0; i < allIdFromCart.length; i++) {
-  fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
-  .then(response => response.json())
-  .then (products => recoveringTheMissingDatasOfCartsObjects(products));
-  fetch(`http://localhost:3000/api/products/${allIdFromCart[i]}`)
- /* .then(console.table(cart));*/
-  /*.then(products => displayProductsByApi(products))*/
-/*} 
-
-
-/* Récupération des infos manquantes sur les produits du panier */
-/*function recoveringTheMissingDatasOfCartsObjects(products) {
-  /*console.table(products)*/
-  /*for (let i = 0; i < cart.length; i++) {
+  for ( i = 0 ; i < cart.length; i++ ) {
     
-    if (cart[i]._id === products.id) {
-      cart[i].name = products.name;
-      
+    if (cart[i]._id === product[i]._id) {
+      cart[i].name = product[i].name;
+      cart[i].price = product[i].price;
+      cart[i].imageUrl = product[i].imageUrl;
+      cart[i].description = product[i].description;
+      cart[i].altTxt = product[i].altTxt;
+    } else {
+      cart[i].name = "Données manquantes";
+      cart[i].price = "Données manquantes";
+      cart[i].imageUrl = "Données manquantes";
+      cart[i].description = "Données manquantes";
+      cart[i].altTxt = "Données manquantes";
     }
-    
+    console.table(cart[i]);
   }
-
 };
 
 
 
 
-  
 
 
 
 
-    /* .then(products => displayProductsByApi(products));
+
+
+
+
 
 
 
@@ -100,9 +85,10 @@ console.table(cart); */
 /* Insertion des datas du produit sélectionné dans la page */
 
 /* Datas récupérées depuis le local storage */
-function displayProductsByCart(cart) {
-  for ( i = 0 ; i < cart.length; i++ ) {
+function displayProducts(cart) {
 
+ for ( i = 0 ; i < cart.length; i++ ) {
+    
   /* Création d'un <article> contenant les infos produit */
   let productArticle = document.createElement("article");
   document.getElementById(`cart__items`).appendChild(productArticle);
@@ -202,3 +188,7 @@ function displayProductsByApi(product) {
 
 
 
+
+Promise.all(productPromises)
+  .then(response => {informationsCompilationFromApiandCart(response)})
+  /*.then(cart => {displayProducts(cart)})*/
