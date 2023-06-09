@@ -46,7 +46,12 @@ for ( i = 0 ; i < allIdFromCart.length; i++ ) {
 
   Promise.all(productPromises)
   .then(response => {informationsCompilationFromApiandCart(response)})
-  .then (cartCompleted => displayProducts(cartCompleted));
+  .then (cartCompleted => displayProducts(cartCompleted))
+    /* LiGNES NON PUSHéS */
+  .then(() => {articleTotal = 0 })
+  .then(cartCompleted => getTheArticlesTotal(cartCompleted))
+  .then(() => {articleTotalPrice = 0})
+  .then((cartCompleted) => getTheArticlesTotalPrice(cartCompleted))
 
 
 
@@ -57,7 +62,7 @@ function informationsCompilationFromApiandCart(product) {
 
   for ( i = 0 ; i < cart.length; i++ ) {
     
-    if (cart[i]._id === product[i]._id) {
+    if (product[i] !== undefined && product[i]._id !== undefined && cart[i]._id === product[i]._id) {
       cart[i].name = product[i].name;
       cart[i].price = product[i].price;
       cart[i].imageUrl = product[i].imageUrl;
@@ -82,6 +87,7 @@ function displayProducts(cart) {
 
  for ( i = 0 ; i < cartCompleted.length; i++ ) {
     
+
   /* Création d'un <article> contenant les infos produit */
   let productArticle = document.createElement("article");
   document.getElementById(`cart__items`).appendChild(productArticle);
@@ -134,3 +140,19 @@ function displayProducts(cart) {
   divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
   }
 };
+
+
+
+/* Total du nombre d'articles au panier : */
+function getTheArticlesTotal(cart) {
+  for (let i = 0; i < cartCompleted.length; i++) {
+    articleTotal = articleTotal + cartCompleted[i].quantity;
+  };
+}
+
+/* Total du prix des articles au panier : */
+function getTheArticlesTotalPrice(cart) {
+  for (let i = 0; i < cartCompleted.length; i++) {
+    articleTotalPrice = articleTotalPrice + (cartCompleted[i].price*cartCompleted[i].quantity);
+  };
+}

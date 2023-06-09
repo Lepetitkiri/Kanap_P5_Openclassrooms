@@ -99,7 +99,7 @@ addToCartButton.addEventListener('click', (e) => {
                 window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
         } else {
             addItemToCart("key");
-            window.location.replace(`./cart.html`) /* Redirection vers la page panier */
+          window.location.replace(`./cart.html`) /* Redirection vers la page panier */
             }         
         }  });
 
