@@ -44,8 +44,15 @@ for ( i = 0 ; i < allIdFromCart.length; i++ ) {
     productPromises.push(product);
   }
 
+  Promise.all(productPromises)
+  .then(response => {informationsCompilationFromApiandCart(response)})
+  .then (cartCompleted => displayProducts(cartCompleted));
+
+
 
 /* Fonction permettant de remplir les infos manquantes de cart depuis l'api */
+let cartCompleted = [];
+
 function informationsCompilationFromApiandCart(product) {
 
   for ( i = 0 ; i < cart.length; i++ ) {
@@ -63,45 +70,37 @@ function informationsCompilationFromApiandCart(product) {
       cart[i].description = "Données manquantes";
       cart[i].altTxt = "Données manquantes";
     }
-    console.table(cart[i]);
+    cartCompleted.push(cart[i]);
   }
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ATTENTION PB OBJETS MULTIPLES A REGLER */
 
 /* Insertion des datas du produit sélectionné dans la page */
-
-/* Datas récupérées depuis le local storage */
 function displayProducts(cart) {
 
- for ( i = 0 ; i < cart.length; i++ ) {
+ for ( i = 0 ; i < cartCompleted.length; i++ ) {
     
   /* Création d'un <article> contenant les infos produit */
   let productArticle = document.createElement("article");
   document.getElementById(`cart__items`).appendChild(productArticle);
   productArticle.classList.add(`cart__item`);
   productArticle.setAttribute("class", "cart__item");
-  productArticle.setAttribute("class", `data-id=product-${cart[i].color}`);
-  productArticle.setAttribute("class", `data-color=product-${color}`);
-/* AJOUTER LES ATTRIBUTS : class="cart__item" data-id="{product-ID}" data-color="{product-color}" */
+  productArticle.setAttribute("class", `data-id=product-${cartCompleted[i]._id}`);
+  productArticle.setAttribute("class", `data-color=product-${cartCompleted[i].color}`);
 
   /* Création d'une <div class="cart__item__img"> dans l'<article> */
   let divArticle = document.createElement("div");
   productArticle.appendChild(divArticle);
   divArticle.classList.add("cart__item__img");
+
+  /* Création d'une <img> contenant les infos produit */
+  let imgArticle = document.createElement("img");
+  /*let divArticle = document.querySelector(".cart__item__img");*/
+  divArticle.appendChild(imgArticle);
+  imgArticle.src = cartCompleted[i].imageUrl;
+  imgArticle.alt = cartCompleted[i].altTxt;
 
   /* Creation d'une <div class="cart__item__content"> dans l'<article> */
   let divArticle2 = document.createElement("div");
@@ -109,10 +108,10 @@ function displayProducts(cart) {
   divArticle2.classList.add("cart__item__content");
 
   /* Creation d'une <div class="cart__item__content__description"> dans la <div class="cart__item__content"> */
- /* let divArticle3 = document.createElement("div");
+  let divArticle3 = document.createElement("div");
   divArticle3.classList.add("cart__item__content__description");
   divArticle2.appendChild(divArticle3);
-  divArticle3.innerHTML = `<h2>${product[i].name}</h2> <p> ${product[i].colors}</p> <p>${product[i].price}</p>`;
+  divArticle3.innerHTML = `<h2>${cartCompleted[i].name}</h2> <p> ${cartCompleted[i].color}</p> <p>${cartCompleted[i].price}</p>`;
 
   /* Creation d'une <div class="cart__item__content__settings"> dans la <div class="cart__item__description"> */
   let divArticle4 = document.createElement("div");
@@ -127,7 +126,7 @@ function displayProducts(cart) {
   let pArticle = document.createElement("p");
   divArticle5.appendChild(pArticle);
   pArticle.innerText = `Qté : `;
-  divArticle5.innerHTML = `<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="">`;
+  divArticle5.innerHTML = `<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cartCompleted[i].quantity}">`;
 
   /* Creation d'une <div class="cart__item__content__settings"__delete> dans la <div class="cart__item__content__settings"> */
   let divArticle6 = document.createElement("div");
@@ -136,59 +135,3 @@ function displayProducts(cart) {
   divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
   }
 };
-
-/* Datas récupérées depuis l'API */
-function displayProductsByApi(product) {
-  for ( i = 0 ; i < product.length; i++ ) {
-
-  /* Création d'une <img> contenant les infos produit */
-
-        /* let imgArticle = document.createElement("img");
-  let divArticle = document.querySelector(".cart__item__img");
-  divArticle.appendChild(imgArticle);
-  imgArticle.src = product[i].imageUrl;
-  imgArticle.alt = product[i].altTxt;
-
-  /* Creation d'une <div class="cart__item__content"> dans l'<article> */
- /* let divArticle2 = document.createElement("div");
-  productArticle.appendChild(divArticle2);
-  divArticle2.classList.add("cart__item__content");
-
-  /* Creation d'une <div class="cart__item__content__description"> dans la <div class="cart__item__content"> */
-        /* let divArticle3 = document.createElement("div");
-  divArticle3.classList.add("cart__item__content__description");
-  let divArticle2 = document.querySelector(".cart__item__content__settings");
-  divArticle2.appendChild(divArticle3);
-  divArticle3.innerHTML = `<h2>${product[i].name}</h2> <p> ${product[i].colors}</p> <p>${product[i].price}</p>`;
-
-  /* Creation d'une <div class="cart__item__content__settings"> dans la <div class="cart__item__description"> */
- /* let divArticle4 = document.createElement("div");
-  divArticle2.appendChild(divArticle4);
-  divArticle4.classList.add("cart__item__content__settings");
-
-  /* Creation d'une <div class="cart__item__content__settings"__quantity> dans la <div class="cart__item__content__settings"> */
- /* let divArticle5 = document.createElement("div");
-  divArticle4.appendChild(divArticle5);
-  divArticle5.classList.add("cart__item__content__settings__quantity"); */
-
-  /* let pArticle = document.createElement("p");
-  divArticle5.appendChild(pArticle);
-  pArticle.innerText = `Qté : `;
-  divArticle5.innerHTML = `<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="">`;
-
-  /* Creation d'une <div class="cart__item__content__settings"__delete> dans la <div class="cart__item__content__settings"> */
-  /* let divArticle6 = document.createElement("div");
-  divArticle4.appendChild(divArticle6);
-  divArticle6.classList.add("cart__item__content__settings__delete");
-  divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`; */
-        }
-}; 
-
-
-
-
-
-
-Promise.all(productPromises)
-  .then(response => {informationsCompilationFromApiandCart(response)})
-  /*.then(cart => {displayProducts(cart)})*/
