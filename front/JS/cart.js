@@ -86,9 +86,8 @@ function displayProducts(cart) {
   let productArticle = document.createElement("article");
   document.getElementById(`cart__items`).appendChild(productArticle);
   productArticle.classList.add(`cart__item`);
-  productArticle.setAttribute("class", "cart__item");
-  productArticle.setAttribute("class", `data-id=product-${cartCompleted[i]._id}`);
-  productArticle.setAttribute("class", `data-color=product-${cartCompleted[i].color}`);
+  productArticle.classList.add(`data-id=product-${cartCompleted[i]._id}`);
+  productArticle.classList.add(`data-color=product-${cartCompleted[i].color}`);
 
   /* Création d'une <div class="cart__item__img"> dans l'<article> */
   let divArticle = document.createElement("div");
@@ -111,7 +110,7 @@ function displayProducts(cart) {
   let divArticle3 = document.createElement("div");
   divArticle3.classList.add("cart__item__content__description");
   divArticle2.appendChild(divArticle3);
-  divArticle3.innerHTML = `<h2>${cartCompleted[i].name}</h2> <p> ${cartCompleted[i].color}</p> <p>${cartCompleted[i].price}</p>`;
+  divArticle3.innerHTML = `<h2>${cartCompleted[i].name}</h2> <p> ${cartCompleted[i].color}</p> <p>${cartCompleted[i].price},00€</p>`;
 
   /* Creation d'une <div class="cart__item__content__settings"> dans la <div class="cart__item__description"> */
   let divArticle4 = document.createElement("div");
