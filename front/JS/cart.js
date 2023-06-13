@@ -7,6 +7,8 @@ let articleTotalPrice = 0 /* Prix total */
 
 getDatas().then(() => {
   displayProducts(cart);
+  getTheArticlesTotal(cart);
+  getTheArticlesTotalPrice(cart);
 });
 
 
@@ -105,3 +107,19 @@ function displayProducts(cart) {
    divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
    }
  };
+
+
+  /* Total du nombre d'articles au panier : */
+  function getTheArticlesTotal(cart) {
+
+    for (let i = 0; i < cart.length; i++) {
+      articleTotal += cart[i].quantity;
+    };
+  }
+  
+  /* Total du prix des articles au panier : */
+  function getTheArticlesTotalPrice(cart) {
+    for (let i = 0; i < cart.length; i++) {
+      articleTotalPrice += (cart[i].price*cart[i].quantity);
+    };
+  }
