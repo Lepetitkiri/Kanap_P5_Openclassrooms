@@ -6,9 +6,9 @@ let articleTotalPrice = 0 /* Prix total */
 
 
 getDatas().then(() => {
-  displayProducts(cart);
   getTheArticlesTotal(cart);
   getTheArticlesTotalPrice(cart);
+  displayProducts(cart);
 });
 
 
@@ -106,7 +106,14 @@ function displayProducts(cart) {
    divArticle6.classList.add("cart__item__content__settings__delete");
    divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
    }
+
+   /* Affichage du total panier */
+   let totalQuantity = document.getElementById("totalQuantity");
+   totalQuantity.innerText = articleTotal;
+   let totalPrice = document.getElementById("totalPrice");
+   totalPrice.innerText = articleTotalPrice + ",00";
  };
+
 
 
   /* Total du nombre d'articles au panier : */
@@ -122,4 +129,5 @@ function displayProducts(cart) {
     for (let i = 0; i < cart.length; i++) {
       articleTotalPrice += (cart[i].price*cart[i].quantity);
     };
-  }
+  };
+
