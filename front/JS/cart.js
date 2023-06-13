@@ -1,15 +1,21 @@
 /* JS page linked to cart.html */
 
 let cart = [] /* Panier */
-let productsDatasFromApi = []; /* Stockage des données depuis API */
+let articleTotal = 0; /* Nombre d'articles */
+let articleTotalPrice = 0 /* Prix total */ 
 
-getDatas();
+
+getDatas().then(() => {
+  displayProducts(cart);
+});
+
 
 
 /* Récupération des elements du panier :*/
-function getDatas() {
+async function getDatas() {
+  const promises = [];
   
-  for ( i = 0; i < localStorage.length; i++ ) {
+  for ( i = 0; i < localStorage.length ; i++ ) {
 
   /* Récupération des élements du local storage : */
   const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
@@ -19,10 +25,10 @@ function getDatas() {
   const quantityInTheLocalStorage = JSON.parse(localStorage.getItem(key)); /* Récupération des quantity du local storage */
 
   /* Récupération des infos depuis l'API : */
-  product = fetch(`http://localhost:3000/api/products/${idInTheLocalStorage}`)
+  const promise = fetch(`http://localhost:3000/api/products/${idInTheLocalStorage}`)
   .then(response => response.json())
   /* Création d'un element pour chaque produit du cart */
-  .then(response =>  {
+  .then(response => {
     const objectInTheLocalStorage = {
       color: colorInTheLocalStorage,
       _id: idInTheLocalStorage,
@@ -35,7 +41,10 @@ function getDatas() {
       };
       cart.push(objectInTheLocalStorage); /* Stockage des datas */
     });
-  };
+
+    promises.push(promise);
+  }
+  await Promise.all(promises);
 }
 
 
@@ -60,8 +69,8 @@ function displayProducts(cart) {
    let imgArticle = document.createElement("img");
    /*let divArticle = document.querySelector(".cart__item__img");*/
    divArticle.appendChild(imgArticle);
-   imgArticle.src = cartCompleted[i].imageUrl;
-   imgArticle.alt = cartCompleted[i].altTxt;
+   imgArticle.src = cart[i].imageUrl;
+   imgArticle.alt = cart[i].altTxt;
  
    /* Creation d'une <div class="cart__item__content"> dans l'<article> */
    let divArticle2 = document.createElement("div");
@@ -87,7 +96,7 @@ function displayProducts(cart) {
    let pArticle = document.createElement("p");
    divArticle5.appendChild(pArticle);
    pArticle.innerText = `Qté : `;
-   divArticle5.innerHTML = `<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cartCompleted[i].quantity}">`;
+   divArticle5.innerHTML = `<input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cart[i].quantity}">`;
  
    /* Creation d'une <div class="cart__item__content__settings"__delete> dans la <div class="cart__item__content__settings"> */
    let divArticle6 = document.createElement("div");
