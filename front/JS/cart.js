@@ -9,6 +9,7 @@ getDatas().then(() => {
   getTheArticlesTotal(cart);
   getTheArticlesTotalPrice(cart);
   displayProducts(cart);
+  deleteArticle(cart);
 });
 
 
@@ -128,3 +129,38 @@ function displayProducts(cart) {
       articleTotalPrice += (cart[i].price*cart[i].quantity);
     };
   };
+
+
+
+  /* Supression d'un article du panier : */
+  function deleteArticle(cart) {
+
+    /* Selection des boutons */
+    let deleteButtons = document.getElementsByClassName(`deleteItem`); 
+
+    /* Creation de l'evenement associé au bouton */
+    for (let i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].addEventListener(`click`,  function() {
+
+        /* Récupération de id/color associé au produit supprimé */
+        const articleAssociatedToDeletedArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
+        const classNameOfDeleteArticle = articleAssociatedToDeletedArticle.className; /* Récupération de la class */
+        const idDeleted = classNameOfDeleteArticle.split('-')[2].split(' ')[0];
+        const colorDeleted = classNameOfDeleteArticle.split(' ')[2].split('=')[1].split('-')[1];
+
+        /* Suppression de l'elèment du LS et cart */
+        localStorage.removeItem(`${idDeleted} ${colorDeleted}`);
+        for (let i = 0; i < cart.length; i++) {
+          if (cart[i].color === colorDeleted && cart[i]._id === idDeleted) {           
+            const cartFiltred = cart.filter(item => item.color !== colorDeleted && item._id !== idDeleted);
+            cart = cartFiltred;
+          };
+        };
+
+        /* MAJ du DOM comprenant le recalcul du total panier */
+
+
+      });
+    };
+  };
+  
