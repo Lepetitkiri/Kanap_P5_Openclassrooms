@@ -142,14 +142,18 @@ function displayProducts(cart) {
     for (let i = 0; i < deleteButtons.length; i++) {
       deleteButtons[i].addEventListener(`click`,  function() {
 
-        /* Récupération de id/color associé au produit supprimé */
+        /* Récupération de id/color associés au produit supprimé */
         const articleAssociatedToDeletedArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
         const classNameOfDeleteArticle = articleAssociatedToDeletedArticle.className; /* Récupération de la class */
         const idDeleted = classNameOfDeleteArticle.split('-')[2].split(' ')[0];
         const colorDeleted = classNameOfDeleteArticle.split(' ')[2].split('=')[1].split('-')[1];
+        
+        /* Récupération de quantité/Prix associés au produit supprimé */
+        const quantityDeleted = localStorage.getItem(`${idDeleted} ${colorDeleted}`);
+        const priceDeleted = cart[i].price;
 
         /* Suppression de l'elèment du LS et cart */
-        localStorage.removeItem(`${idDeleted} ${colorDeleted}`);
+        //localStorage.removeItem(`${idDeleted} ${colorDeleted}`);
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].color === colorDeleted && cart[i]._id === idDeleted) {           
             const cartFiltred = cart.filter(item => item.color !== colorDeleted && item._id !== idDeleted);
@@ -158,9 +162,12 @@ function displayProducts(cart) {
         };
 
         /* MAJ du DOM comprenant le recalcul du total panier */
-
-
-      });
+        articleAssociatedToDeletedArticle.remove();
+        articleTotal -= quantityDeleted;
+        totalQuantity.innerText = articleTotal;
+        articleTotalPrice -= (priceDeleted*quantityDeleted);
+        totalPrice.innerText = articleTotalPrice + ",00";
+      }); 
     };
   };
   
