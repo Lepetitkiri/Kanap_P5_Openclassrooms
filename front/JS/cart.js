@@ -21,9 +21,8 @@ async function getDatas() {
 
   /* Récupération des élements du local storage : */
   const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
-  const keySplited = key.split(' '); /* Séparation de la clé en deux string */
-  const idInTheLocalStorage = keySplited[0]; /* Récupération des id du local storage */
-  const colorInTheLocalStorage =  keySplited[1]; /* Récupération des color du local storage */
+  const idInTheLocalStorage = key.split(' ')[0]; /* Récupération des id du local storage */
+  const colorInTheLocalStorage = key.split(' ')[1]; /* Récupération des color du local storage */
   const quantityInTheLocalStorage = JSON.parse(localStorage.getItem(key)); /* Récupération des quantity du local storage */
 
   /* Récupération des infos depuis l'API : */
@@ -69,7 +68,6 @@ function displayProducts(cart) {
  
    /* Création d'une <img> contenant les infos produit */
    let imgArticle = document.createElement("img");
-   /*let divArticle = document.querySelector(".cart__item__img");*/
    divArticle.appendChild(imgArticle);
    imgArticle.src = cart[i].imageUrl;
    imgArticle.alt = cart[i].altTxt;
@@ -130,4 +128,3 @@ function displayProducts(cart) {
       articleTotalPrice += (cart[i].price*cart[i].quantity);
     };
   };
-
