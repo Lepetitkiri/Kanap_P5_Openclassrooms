@@ -1,19 +1,17 @@
 /* JS page linked to cart.html */
 
 let cart = [] /* Panier */
-let articleTotal = 0; /* Nombre d'articles */
-let articleTotalPrice = 0 /* Prix total */ 
 
 let idOfModifyArticle; /* Id d'un article à modifier */
 let colorOfModifyArticle; /* Couleur d'un article à modifier */
 let quantiOfToModifyArticle; /* Quantité d'un article à modifier */
+let newQuantityOfModifyArticle; /* Nouvelle quantité d'un article à modifier */
 
 
 getDatas().then(() => {
-  getTheArticlesTotal(cart);
-  getTheArticlesTotalPrice(cart);
   displayProducts(cart);
   deleteArticle(cart);
+  cartCalcultation(cart);
 });
 
 
@@ -109,30 +107,7 @@ function displayProducts(cart) {
    divArticle6.classList.add("cart__item__content__settings__delete");
    divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
    }
-
-   /* Affichage du total panier */
-   let totalQuantity = document.getElementById("totalQuantity");
-   totalQuantity.innerText = articleTotal;
-   let totalPrice = document.getElementById("totalPrice");
-   totalPrice.innerText = articleTotalPrice + ",00";
  };
-
-
-
-  /* Total du nombre d'articles au panier : */
-  function getTheArticlesTotal(cart) {
-
-    for (let i = 0; i < cart.length; i++) {
-      articleTotal += cart[i].quantity;
-    };
-  }
-  
-  /* Total du prix des articles au panier : */
-  function getTheArticlesTotalPrice(cart) {
-    for (let i = 0; i < cart.length; i++) {
-      articleTotalPrice += (cart[i].price*cart[i].quantity);
-    };
-  };
 
 
 
@@ -146,35 +121,28 @@ function displayProducts(cart) {
     for (let i = 0; i < deleteButtons.length; i++) {
       deleteButtons[i].addEventListener(`click`,  function() {
 
-        /* Récupération de id/color/quantité intiales associées au produit modifié */
+        /* Récupération de id/color/quantité/prix intiales associés au produit modifié */
         const domElementAssociatedToArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
         getDatasFromModifyArticle(domElementAssociatedToArticle)
-        
-        /* Récupération de quantité/Prix associés au produit supprimé */
-        const priceDeleted = cart[i].price;
+        const priceOfModifyArticle = cart[i].price;
 
         /* Suppression de l'elèment du LS et cart */
         localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
         for (let i = 0; i < cart.length; i++) {
-          if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {           
-            const cartFiltred = cart.filter(item => item.color !== colorOfModifyArticle && item._id !== idOfModifyArticle);
-            cart = cartFiltred;
-          };
+          if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {
+            const cartFiltered = cart.filter(item => item.color !== colorOfModifyArticle || item._id !== idOfModifyArticle);
+            cart = cartFiltered;
+          }
         };
 
         /* MAJ du DOM comprenant le recalcul du total panier */
         domElementAssociatedToArticle.remove();
-        articleTotal -= quantiOfToModifyArticle;
-        totalQuantity.innerText = articleTotal;
-        articleTotalPrice -= (priceDeleted*quantiOfToModifyArticle);
-        totalPrice.innerText = articleTotalPrice + ",00";
+        cartCalcultation(cart);
       }); 
     };
   };
   
 
-
-  
 
 function getDatasFromModifyArticle(domElementAssociatedToArticle) {
 
@@ -185,6 +153,27 @@ function getDatasFromModifyArticle(domElementAssociatedToArticle) {
 
   /* Récupération de quantité/Prix associés au produit supprimé */
   quantiOfToModifyArticle = localStorage.getItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
-  //const priceOfModifyArticle = cart[i].price;  
+};
 
+
+
+function cartCalcultation(cart) {
+let articleTotal = 0; /* Nombre d'articles */
+let articleTotalPrice = 0 /* Prix total */ 
+
+  /* Total du nombre d'articles au panier : */
+  for (let i = 0; i < cart.length; i++) {
+    articleTotal += cart[i].quantity;
+  };
+  /* Total du prix des articles au panier : */
+  for (let i = 0; i < cart.length; i++) {
+    articleTotalPrice += (cart[i].price*cart[i].quantity);
+  };
+   /* Affichage du total panier */
+  for ( i = 0 ; i < cart.length; i++ ) {
+   let totalQuantity = document.getElementById("totalQuantity");
+   totalQuantity.innerText = articleTotal;
+   let totalPrice = document.getElementById("totalPrice");
+   totalPrice.innerText = articleTotalPrice;
+  }
 }
