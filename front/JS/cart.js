@@ -139,9 +139,6 @@ function displayProducts(cart) {
         /* MAJ du DOM comprenant le recalcul du total panier */
         domElementAssociatedToArticle.remove();
         cartCalcultation(cart);
-
-        /* ATTENTION PB quand on supprime le dernier element 
-        /* A CORRIGER*/
       }); 
     };
   };
@@ -162,6 +159,7 @@ function getDatasFromModifyArticle(domElementAssociatedToArticle) {
 
 
 function cartCalcultation(cart) {
+
 let articleTotal = 0; /* Nombre d'articles */
 let articleTotalPrice = 0 /* Prix total */ 
 
@@ -171,15 +169,13 @@ let articleTotalPrice = 0 /* Prix total */
   };
   /* Total du prix des articles au panier : */
   for (let i = 0; i < cart.length; i++) {
-    articleTotalPrice += (cart[i].price*cart[i].quantity);
+    articleTotalPrice += cart[i].price * cart[i].quantity;
   };
    /* Affichage du total panier */
-  for ( i = 0 ; i < cart.length; i++ ) {
    let totalQuantity = document.getElementById("totalQuantity");
    totalQuantity.innerText = articleTotal;
    let totalPrice = document.getElementById("totalPrice");
    totalPrice.innerText = articleTotalPrice;
-  }
 }
 
 
