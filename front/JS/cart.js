@@ -4,6 +4,10 @@ let cart = [] /* Panier */
 let articleTotal = 0; /* Nombre d'articles */
 let articleTotalPrice = 0 /* Prix total */ 
 
+let idOfModifyArticle; /* Id d'un article à modifier */
+let colorOfModifyArticle; /* Couleur d'un article à modifier */
+let quantiOfToModifyArticle; /* Quantité d'un article à modifier */
+
 
 getDatas().then(() => {
   getTheArticlesTotal(cart);
@@ -142,32 +146,45 @@ function displayProducts(cart) {
     for (let i = 0; i < deleteButtons.length; i++) {
       deleteButtons[i].addEventListener(`click`,  function() {
 
-        /* Récupération de id/color associés au produit supprimé */
-        const articleAssociatedToDeletedArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
-        const classNameOfDeleteArticle = articleAssociatedToDeletedArticle.className; /* Récupération de la class */
-        const idDeleted = classNameOfDeleteArticle.split('-')[2].split(' ')[0];
-        const colorDeleted = classNameOfDeleteArticle.split(' ')[2].split('=')[1].split('-')[1];
+        /* Récupération de id/color/quantité intiales associées au produit modifié */
+        const domElementAssociatedToArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
+        getDatasFromModifyArticle(domElementAssociatedToArticle)
         
         /* Récupération de quantité/Prix associés au produit supprimé */
-        const quantityDeleted = localStorage.getItem(`${idDeleted} ${colorDeleted}`);
         const priceDeleted = cart[i].price;
 
         /* Suppression de l'elèment du LS et cart */
-        //localStorage.removeItem(`${idDeleted} ${colorDeleted}`);
+        localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
         for (let i = 0; i < cart.length; i++) {
-          if (cart[i].color === colorDeleted && cart[i]._id === idDeleted) {           
-            const cartFiltred = cart.filter(item => item.color !== colorDeleted && item._id !== idDeleted);
+          if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {           
+            const cartFiltred = cart.filter(item => item.color !== colorOfModifyArticle && item._id !== idOfModifyArticle);
             cart = cartFiltred;
           };
         };
 
         /* MAJ du DOM comprenant le recalcul du total panier */
-        articleAssociatedToDeletedArticle.remove();
-        articleTotal -= quantityDeleted;
+        domElementAssociatedToArticle.remove();
+        articleTotal -= quantiOfToModifyArticle;
         totalQuantity.innerText = articleTotal;
-        articleTotalPrice -= (priceDeleted*quantityDeleted);
+        articleTotalPrice -= (priceDeleted*quantiOfToModifyArticle);
         totalPrice.innerText = articleTotalPrice + ",00";
       }); 
     };
   };
   
+
+
+  
+
+function getDatasFromModifyArticle(domElementAssociatedToArticle) {
+
+  /* Récupération de id/color associés au produit supprimé */
+  classNameOfModifyArticle = domElementAssociatedToArticle.className; /* Récupération de la class */
+  idOfModifyArticle = classNameOfModifyArticle.split('-')[2].split(' ')[0];
+  colorOfModifyArticle = classNameOfModifyArticle.split(' ')[2].split('=')[1].split('-')[1];
+
+  /* Récupération de quantité/Prix associés au produit supprimé */
+  quantiOfToModifyArticle = localStorage.getItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
+  //const priceOfModifyArticle = cart[i].price;  
+
+}
