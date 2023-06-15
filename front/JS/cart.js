@@ -11,6 +11,7 @@ let newQuantityOfModifyArticle; /* Nouvelle quantité d'un article à modifier *
 getDatas().then(() => {
   displayProducts(cart);
   deleteArticle(cart);
+  quantityModification(cart);
   cartCalcultation(cart);
 });
 
@@ -138,6 +139,9 @@ function displayProducts(cart) {
         /* MAJ du DOM comprenant le recalcul du total panier */
         domElementAssociatedToArticle.remove();
         cartCalcultation(cart);
+
+        /* ATTENTION PB quand on supprime le dernier element 
+        /* A CORRIGER*/
       }); 
     };
   };
@@ -177,3 +181,37 @@ let articleTotalPrice = 0 /* Prix total */
    totalPrice.innerText = articleTotalPrice;
   }
 }
+
+
+
+/* Modification de la quantité du panier : */
+function quantityModification(cart) {
+
+  /* Selection des boutons */
+  let quantityInputs = document.getElementsByClassName(`itemQuantity`); 
+  
+  /* Creation de l'evenement associé au bouton */
+  for (let i = 0; i < quantityInputs.length; i++) {
+    /* Récupération de la nouvelle quantité */
+    quantityInputs[i].addEventListener(`click`,(e) => {newQuantityOfModifyArticle = Number(e.target.value)});
+  
+    quantityInputs[i].addEventListener(`click`, function() {
+    /* Récupération de id/color/prix associés au produit modifié */
+    const domElementAssociatedToArticle = quantityInputs[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
+    getDatasFromModifyArticle(domElementAssociatedToArticle)
+    const priceOfModifyArticle = cart[i].price;
+
+    /* Modification de l'elèment dans le LS et cart */
+    localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
+    localStorage.setItem(`${idOfModifyArticle} ${colorOfModifyArticle}`, newQuantityOfModifyArticle);
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {           
+        cart[i].quantity = newQuantityOfModifyArticle;
+      };
+    };
+
+    /* Recalcul du total panier */
+    cartCalcultation(cart)
+    });
+};
+};
