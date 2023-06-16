@@ -211,3 +211,58 @@ function quantityModification(cart) {
     });
 };
 };
+
+
+
+/*/////////////////// NON PUSHé */
+/* Validation de formulaire */
+
+/* Récupération des elements du DOM */
+let orderInput = document.getElementById(`order`);
+let firstNameErrorMessage = document.getElementById(`firstNameErrorMsg`);
+let lastNameErrorMessage = document.getElementById(`lastNameErrorMsg`);
+let addressErrorMessage = document.getElementById(`addressErrorMsg`);
+let cityErrorMessage = document.getElementById(`cityErrorMsg`);
+let emailErrorMessage = document.getElementById(`emailErrorMsg`);
+
+orderInput.addEventListener('click', (e) => {
+  /* Récupération des infos renseignées dans le formulaire */
+  let firstNameValue = firstName.value;
+  let lastNameValue = lastName.value;
+  let addressValue = address.value;
+  let cityValue = city.value;
+  let emailValue = email.value;
+
+  /* Création de masques Regex */
+  let worldRegex = /^[a-zA-Z-à-ÿ]+$/;
+  let addressRegex = /[0-9a-zA-Z--à-ÿ]\s[a-zA-Z--à-ÿ]/; /*/^[0-9]\s[a-zA-Z--à-ÿ]\s[0-9]\s[a-zA-Z--à-ÿ]+$/;*/
+  let emailRegex = /^[a-zA-Z--à-ÿ]/;
+
+  /* Fonction de vérification de la validité du format de données renseignées dans le formulaire */
+  function formCheking (valueToCheck, mask, domElement, errorMessage) {
+    if (valueToCheck === "") {
+      domElement.innerText = `Veuillez renseigner ce champ`;
+    } else {
+      if (mask.test(valueToCheck) == false) {
+        domElement.innerText = `${errorMessage}`;
+      }
+    }
+  }
+
+  formCheking (firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Que des lettres SVP. Exemple : Noemie`);
+  formCheking (lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Que des lettres SVP. Exemple : Diop`);
+  formCheking (addressValue, addressRegex, addressErrorMessage, `Ceci n'est pas une adresse valide. Exemple : 2 rue des ânes 59283 Moncheaux`)
+  formCheking (cityValue, worldRegex, cityErrorMessage, `OUPS! Que des lettres SVP. Exemple : Tokyo`)
+
+
+
+  /* Si tous les champs du formulaire sont conformes ... */
+  /*if (worldRegex.test(firstNameValue) == true && worldRegex.test(lastNameValue) == true && addressRegex.test(addressValue) == true && worldRegex.test(cityValue) == true && emailRegex.test(emailValue) == true) {
+    console.log("test") 
+  } else {
+    e.preventDefault(); /* Ne pas raffraichir la page */
+    /*console.log("pas test")
+  }*/
+
+  e.preventDefault(); /* A SUPRIMER A LA FIN */
+})
