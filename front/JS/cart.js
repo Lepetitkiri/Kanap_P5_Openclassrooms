@@ -133,7 +133,7 @@ function displayProducts(cart) {
           if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {
             const cartFiltered = cart.filter(item => item.color !== colorOfModifyArticle || item._id !== idOfModifyArticle);
             cart = cartFiltered;
-          }
+          };
         };
 
         /* MAJ du DOM comprenant le recalcul du total panier */
@@ -160,8 +160,8 @@ function getDatasFromModifyArticle(domElementAssociatedToArticle) {
 
 function cartCalcultation(cart) {
 
-let articleTotal = 0; /* Nombre d'articles */
-let articleTotalPrice = 0 /* Prix total */ 
+  let articleTotal = 0; /* Nombre d'articles */
+  let articleTotalPrice = 0 /* Prix total */ 
 
   /* Total du nombre d'articles au panier : */
   for (let i = 0; i < cart.length; i++) {
@@ -176,7 +176,7 @@ let articleTotalPrice = 0 /* Prix total */
    totalQuantity.innerText = articleTotal;
    let totalPrice = document.getElementById("totalPrice");
    totalPrice.innerText = articleTotalPrice;
-}
+};
 
 
 
@@ -214,7 +214,6 @@ function quantityModification(cart) {
 
 
 
-/*/////////////////// NON PUSHé */
 /* Validation de formulaire */
 
 /* Récupération des elements du DOM */
@@ -234,9 +233,10 @@ orderInput.addEventListener('click', (e) => {
   let emailValue = email.value;
 
   /* Création de masques Regex */
-  let worldRegex = /^[a-zA-Z-à-ÿ]+$/;
-  let addressRegex = /[0-9a-zA-Z--à-ÿ]\s[a-zA-Z--à-ÿ]/; /*/^[0-9]\s[a-zA-Z--à-ÿ]\s[0-9]\s[a-zA-Z--à-ÿ]+$/;*/
-  let emailRegex = /^[a-zA-Z--à-ÿ]/;
+  let worldRegex = /^[a-zA-Zà-ÿ-\s]+$/;
+  let addressRegex = /[0-9a-zA-Zà-ÿ-\s]+$/;
+  let cityRegex = /^[0-9]{5}\s[a-zA-Zà-ÿ-\s]+$/;
+  let emailRegex = /^[a-zA-Zà-ÿ-]+[@][a-zA-Zà-ÿ-]+[.][a-zA-Zà-ÿ-]{2,3}$/;
 
   /* Fonction de vérification de la validité du format de données renseignées dans le formulaire */
   function formCheking (valueToCheck, mask, domElement, errorMessage) {
@@ -245,24 +245,19 @@ orderInput.addEventListener('click', (e) => {
     } else {
       if (mask.test(valueToCheck) == false) {
         domElement.innerText = `${errorMessage}`;
-      }
-    }
-  }
+      };
+    };
+  };
 
-  formCheking (firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Que des lettres SVP. Exemple : Noemie`);
-  formCheking (lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Que des lettres SVP. Exemple : Diop`);
-  formCheking (addressValue, addressRegex, addressErrorMessage, `Ceci n'est pas une adresse valide. Exemple : 2 rue des ânes 59283 Moncheaux`)
-  formCheking (cityValue, worldRegex, cityErrorMessage, `OUPS! Que des lettres SVP. Exemple : Tokyo`)
+  formCheking (firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`);
+  formCheking (lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`);
+  formCheking (addressValue, addressRegex, addressErrorMessage, `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`);
+  formCheking (cityValue, cityRegex, cityErrorMessage, `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`);
+  formCheking (emailValue, emailRegex, emailErrorMessage, `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`);
 
 
 
-  /* Si tous les champs du formulaire sont conformes ... */
-  /*if (worldRegex.test(firstNameValue) == true && worldRegex.test(lastNameValue) == true && addressRegex.test(addressValue) == true && worldRegex.test(cityValue) == true && emailRegex.test(emailValue) == true) {
-    console.log("test") 
-  } else {
-    e.preventDefault(); /* Ne pas raffraichir la page */
-    /*console.log("pas test")
-  }*/
+
 
   e.preventDefault(); /* A SUPRIMER A LA FIN */
 })
