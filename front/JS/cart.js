@@ -245,7 +245,8 @@ orderInput.addEventListener('click', (e) => {
     } else {
       if (mask.test(valueToCheck) == false) {
         domElement.innerText = `${errorMessage}`;
-      };
+        e.preventDefault();
+      }
     };
   };
 
@@ -255,9 +256,43 @@ orderInput.addEventListener('click', (e) => {
   formCheking (cityValue, cityRegex, cityErrorMessage, `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`);
   formCheking (emailValue, emailRegex, emailErrorMessage, `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`);
 
+  /* Récupération des datas du formulaire => format : { {contact}, [{canapé1},{canapé2}...] } */
+  if (worldRegex.test(firstNameValue) === true && worldRegex.test(lastNameValue) === true && addressRegex.test(addressValue) === true && cityRegex.test(cityValue) && emailRegex.test(emailValue)) {
+    let cartRecuperation = cart.map(cart => [cart._id]);
+    let order = {
+      contact: {
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      address: addressValue,
+      city: cityValue,
+      email: emailValue,
+      },
+    products: cartRecuperation,
+    };
 
+    /* Envoi des datas vers l'API */
+    fetchToApi(order);  
+  };
+});
 
-
-
-  e.preventDefault(); /* A SUPRIMER A LA FIN */
-})
+function fetchToApi (order) {
+  fetch("http://localhost:3000/api/products/order", 
+  {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(order),
+  })
+  .then((res) => {
+    return res.json();
+  })
+    .then((data) => {
+      localStorage.clear();
+      window.location.href=`confirmation.html?orderId=${data.orderId}`;
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+  }
