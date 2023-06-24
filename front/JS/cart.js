@@ -246,6 +246,10 @@ orderInput.addEventListener('click', (e) => {
       if (mask.test(valueToCheck) == false) {
         domElement.innerText = `${errorMessage}`;
         e.preventDefault();
+      } else {
+        if (mask.test(valueToCheck) == true) {
+          domElement.innerText = "";
+        }
       }
     };
   };
