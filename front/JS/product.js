@@ -59,11 +59,11 @@ let color = "";
 let quantity = "";
 
 /* Récupération des datas au click sur les balises */
-selectedProductColorbutton.addEventListener('click', (e) => { 
+selectedProductColorbutton.addEventListener('change', (e) => { 
     color = e.target.value;
 })
 
-selectedProductQuantitybutton.addEventListener('click', (e) => { 
+selectedProductQuantitybutton.addEventListener('change', (e) => { 
     quantity = e.target.value;
 })
 
