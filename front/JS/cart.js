@@ -201,8 +201,9 @@ function quantityModification(cart) {
       localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
       localStorage.setItem(`${idOfModifyArticle} ${colorOfModifyArticle}`, newQuantityOfModifyArticle);
       for (let j = 0; j < cart.length; j++) {
-        cart.splice(j, 1);
-        break;
+        if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {
+          cart[i].quantity = newQuantityOfModifyArticle;
+        };
       };
 
       /* Recalcul du total panier */
