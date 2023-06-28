@@ -129,10 +129,10 @@ function deleteArticle(cart) {
 
       /* Suppression de l'elèment du LS et cart */
       localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {
-          const cartFiltered = cart.filter(item => item.color !== colorOfModifyArticle || item._id !== idOfModifyArticle);
-          cart = cartFiltered;
+      for (let j = 0; j < cart.length; j++) {
+        if (cart[j].color == colorOfModifyArticle && cart[j]._id == idOfModifyArticle) {
+          cart.splice(j, 1);
+          break;
         };
       };
 
@@ -200,10 +200,9 @@ function quantityModification(cart) {
       /* Modification de l'elèment dans le LS et cart */
       localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
       localStorage.setItem(`${idOfModifyArticle} ${colorOfModifyArticle}`, newQuantityOfModifyArticle);
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].color === colorOfModifyArticle && cart[i]._id === idOfModifyArticle) {
-          cart[i].quantity = newQuantityOfModifyArticle;
-        };
+      for (let j = 0; j < cart.length; j++) {
+        cart.splice(j, 1);
+        break;
       };
 
       /* Recalcul du total panier */
