@@ -10,7 +10,6 @@ let newQuantityOfModifyArticle; /* Nouvelle quantité d'un article à modifier *
 
 getDatas().then(() => {
   displayProducts(cart);
-  deleteArticle(cart);
   quantityModification(cart);
   cartCalcultation(cart);
 });
@@ -106,42 +105,39 @@ function displayProducts(cart) {
     let divArticle6 = document.createElement("div");
     divArticle4.appendChild(divArticle6);
     divArticle6.classList.add("cart__item__content__settings__delete");
-    divArticle6.innerHTML = `<p class="deleteItem">Supprimer</p>`;
+    divArticle6.innerHTML = `<p class="deleteItem" id=${cart[i]._id}*${cart[i].color}>Supprimer</p>`;
+  
+    /* Création d'un evenement permettant de surveiller les boutons supprimer et de lancer la fonction de suppression */
+    let deleteButton = document.getElementById(`${cart[i]._id}*${cart[i].color}`)
+    deleteButton.addEventListener('click', () => {
+      deleteArticle(deleteButton.id);
+    });
+
   }
 };
 
 
 
 /* Supression d'un article du panier : */
-function deleteArticle(cart) {
+function deleteArticle(itemToDeleteDatas) {
 
-  /* Selection des boutons */
-  let deleteButtons = document.getElementsByClassName(`deleteItem`);
-
-  /* Creation de l'evenement associé au bouton */
-  for (let i = 0; i < deleteButtons.length; i++) {
-    deleteButtons[i].addEventListener(`click`, function () {
-
-      /* Récupération de id/color/quantité/prix intiales associés au produit modifié */
-      const domElementAssociatedToArticle = deleteButtons[i].closest('article'); /* Selectionne l'ancètre <article> le + proche */
-      getDatasFromModifyArticle(domElementAssociatedToArticle)
-      const priceOfModifyArticle = cart[i].price;
+  /* Récupération de l'id et de la couleur du produit à supprimer */
+  idToDelete = itemToDeleteDatas.split('*')[0];
+  colorToDelete = itemToDeleteDatas.split('*')[1];
 
       /* Suppression de l'elèment du LS et cart */
-      localStorage.removeItem(`${idOfModifyArticle} ${colorOfModifyArticle}`);
-      for (let j = 0; j < cart.length; j++) {
-        if (cart[j].color == colorOfModifyArticle && cart[j]._id == idOfModifyArticle) {
-          cart.splice(j, 1);
+      localStorage.removeItem(`${idToDelete} ${colorToDelete}`);
+      for (let i = 0; i < cart.length; i++) {
+        if (cart[i].color == colorToDelete && cart[i]._id == idToDelete) {
+          cart.splice(i, 1);
           break;
         };
       };
 
       /* MAJ du DOM comprenant le recalcul du total panier */
-      domElementAssociatedToArticle.remove();
+      document.getElementById(`${idToDelete}*${colorToDelete}`).closest('article').remove();
       cartCalcultation(cart);
-    });
   };
-};
 
 
 
@@ -276,10 +272,6 @@ orderInput.addEventListener('click', (e) => {
 
     /* Envoi des datas vers l'API */
     fetchToApi(order);
-  } else {
-    deleteArticle(cart);
-    quantityModification(cart);
-    cartCalcultation(cart);
   }
 });
 
