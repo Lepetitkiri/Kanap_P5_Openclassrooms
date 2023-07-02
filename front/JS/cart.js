@@ -237,6 +237,7 @@ orderInput.addEventListener('click', (e) => {
   function formCheking(valueToCheck, mask, domElement, errorMessage) {
     if (valueToCheck === "") {
       domElement.innerText = `Veuillez renseigner ce champ`;
+      e.preventDefault();
     } else {
       if (mask.test(valueToCheck) == false) {
         domElement.innerText = `${errorMessage}`;
@@ -249,30 +250,36 @@ orderInput.addEventListener('click', (e) => {
     };
   };
 
-  formCheking(firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`);
-  formCheking(lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`);
-  formCheking(addressValue, addressRegex, addressErrorMessage, `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`);
-  formCheking(cityValue, cityRegex, cityErrorMessage, `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`);
-  formCheking(emailValue, emailRegex, emailErrorMessage, `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`);
+  /* Controle que le cart est bien rempli */
+  cart.length !== 0 ?    
+  formCheking(firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`)
+  + formCheking(lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`)
+  + formCheking(addressValue, addressRegex, addressErrorMessage, `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`)
+  + formCheking(cityValue, cityRegex, cityErrorMessage, `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`)
+  + formCheking(emailValue, emailRegex, emailErrorMessage, `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`) 
+  + sendCartToApi() : 
+  window.alert("Heu... Vous voulez acheter du vent ou quoi ? Ca serait mieux de mettre un ou plusieurs canapés dans votre panier.") + e.preventDefault();
 
   /* Récupération des datas du formulaire => format : { {contact}, [{canapé1},{canapé2}...] } */
-  if (worldRegex.test(firstNameValue) === true && worldRegex.test(lastNameValue) === true && addressRegex.test(addressValue) === true && cityRegex.test(cityValue) && emailRegex.test(emailValue)) {
-    let cartRecuperation = cart.map(cart => [cart._id]);
-    let order = {
-      contact: {
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        address: addressValue,
-        city: cityValue,
-        email: emailValue,
-      },
-      products: cartRecuperation,
-    };
-
-    /* Envoi des datas vers l'API */
-    fetchToApi(order);
-  }
-});
+  function sendCartToApi() {
+    if (worldRegex.test(firstNameValue) === true && worldRegex.test(lastNameValue) === true && addressRegex.test(addressValue) === true && cityRegex.test(cityValue) && emailRegex.test(emailValue)) {
+      let cartRecuperation = cart.map(cart => [cart._id]);
+      let order = {
+        contact: {
+          firstName: firstNameValue,
+          lastName: lastNameValue,
+          address: addressValue,
+          city: cityValue,
+          email: emailValue,
+        },
+        products: cartRecuperation,
+      };
+  
+      /* Envoi des datas vers l'API */
+      fetchToApi(order);
+    }
+  };
+  });
 
 function fetchToApi(order) {
   fetch("http://localhost:3000/api/products/order",
