@@ -112,7 +112,6 @@ function displayProducts(cart) {
     deleteButton.addEventListener('click', () => {
       deleteArticle(deleteButton.id);
     });
-
   }
 };
 

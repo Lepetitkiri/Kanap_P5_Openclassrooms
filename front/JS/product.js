@@ -95,7 +95,7 @@ addToCartButton.addEventListener('click', (e) => {
         if (color === "") {
             window.alert(`veuillez selectionner une couleur SVP`);
         } else {
-            if (quantity <= 0 || quantity > 100) {
+            if (quantity < 1 || quantity > 100) {
                 window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
         } else {
             addItemToCart("key");
