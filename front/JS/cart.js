@@ -251,7 +251,7 @@ orderInput.addEventListener('click', (e) => {
   };
 
   /* Controle que le cart est bien rempli */
-  cart.length !== 0 ?    
+  cart.length !== 0 ?
   formCheking(firstNameValue, worldRegex, firstNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`)
   + formCheking(lastNameValue, worldRegex, lastNameErrorMessage, `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`)
   + formCheking(addressValue, addressRegex, addressErrorMessage, `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`)
