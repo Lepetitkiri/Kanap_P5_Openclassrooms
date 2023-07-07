@@ -1,6 +1,6 @@
 /**
  * Récupération des produits depuis l'API
- * @return { Object}
+ * @return {Object} product
  */
 const getAPI = () => {
     fetch(`http://localhost:3000/api/products`)
@@ -10,7 +10,7 @@ const getAPI = () => {
    
 /**
  * Affichage des produits dans le DOM
- * @param { Object } product 
+ * @param {Object} product 
  */
 const displayProducts = (product) => {
     product.forEach(function(product) {

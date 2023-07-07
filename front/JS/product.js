@@ -1,21 +1,28 @@
-/* JS page linked to product.html */
+/**
+ * Récupération de l'id du canapé depuis l'URL de la page
+ * @returns {String} urlId
+ */
+const idRecuperation = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlId = urlParams.get('id');
+    return urlId
+};
 
-/* Récupération du href de la page */
-const url = window.location.href;
-/* Extraction de l'ID depuis le href de la page */
-const urlIdsSplited = url.split('=');
-const urlId = urlIdsSplited[1];
-
-
-
-/* Récupération des produits depuis l'API : */
-fetch(`http://localhost:3000/api/products/${urlId}`)
+/**
+ * Récupération des produits depuis l'API
+ * @return {Object} product
+ */
+const getAPI = () => {
+    fetch(`http://localhost:3000/api/products/${urlId}`)
     .then(response => response.json())
-    .then(function(product) {displayProductPage(product)})
+    .then(product => displayProductPage(product))
+};
 
-        /* Insertion des datas du produit sélectionné dans la page */
-function displayProductPage(product) {
-
+/**
+ * Affichage des produits dans le DOM
+ * @param {Object} product
+ */
+const displayProductPage = (product) => {
     /* insertion du src et alt de l'image */
     let productImage = document.createElement('img');
     document.querySelector(`.item__img`).appendChild(productImage);
@@ -24,52 +31,52 @@ function displayProductPage(product) {
 
     /* insertion du nom du produit */
     let productName = document.getElementById(`title`);
-    productName.innerHTML = product.name;
+    productName.textContent = product.name;
 
     /* insertion du prix du produit */
     let productPrice = document.getElementById(`price`);
-    productPrice.innerHTML = product.price
+    productPrice.textContent = product.price
 
     /* insertion de la description du produit */
     let productDescription = document.getElementById(`description`);
-    productDescription.innerHTML = product.description;
+    productDescription.textContent = product.description;
 
     /* insertion des options de couleurs du produit */
     for (let i = 0; i < product.colors.length; i++) {
         let productColor = document.createElement(`option`);
         document.querySelector(`#colors`).appendChild(productColor);
-        productColor.innerHTML = product.colors[i];
-    }
-    
-    
-}
+        productColor.textContent = product.colors[i];
+    };    
+};
 
+/**
+ * Gestionnaire d'evenement 
+ */
+const addEventListener = () => {
+    /* Création des variables */
+    let color = ""; 
+    let quantity = "";
 
+    /* Récupération des datas au click sur les balises */
+    document.getElementById(`colors`).addEventListener('change', (e) => { 
+        color = e.target.value; 
+    })
+    document.getElementById(`quantity`).addEventListener('change', (e) => { 
+        quantity = e.target.value;  
+    });
+    /* Ecouteur d'événement pour le bouton "Ajouter au panier" */
+    document.getElementById(`addToCart`).addEventListener('click', (e) => {
+        checkUserOptions(color, quantity);
+    });
+};
 
-
-/* Recupérer les infos des produits sélectionnés : */
-
-/* Selection des balises */
-const addToCartButton = document.getElementById(`addToCart`); 
-const selectedProductColorbutton = document.getElementById(`colors`);  
-const selectedProductQuantitybutton = document.getElementById(`quantity`); 
-
-/* Création des variables */
-let color = ""; 
-let quantity = "";
-
-/* Récupération des datas au click sur les balises */
-selectedProductColorbutton.addEventListener('change', (e) => { 
-    color = e.target.value;
-})
-
-selectedProductQuantitybutton.addEventListener('change', (e) => { 
-    quantity = e.target.value;
-})
-
-
-
-function addItemToCart() {
+/**
+ * Ajout de la commande dans le local storage
+ * @param {String} urlId
+ * @param {String} color
+ * @param {String} quantity
+ */
+addItemToCart = (urlId, color, quantity) => {
     let key = `${urlId} ${color}`; /* Clé d'identification du produit  sélectionné */
     let cart = JSON.parse(localStorage.getItem(key)) || []; /* Récupération du panier depuis le local storage, si null, renvoi un array vide */
 
@@ -86,21 +93,27 @@ function addItemToCart() {
         cart.push(parseInt(quantity)); /* Ajout de la valeur du produit dans l'array vide */
         localStorage.setItem(key, JSON.stringify(parseInt(cart))) /* Ajout au local storage */
     }
-}
+};
 
-
-/* Au click sur "ajouter au panier", stockage des datas dans le local storage */
-    
-addToCartButton.addEventListener('click', (e) => {
-        if (color === "") {
-            window.alert(`veuillez selectionner une couleur SVP`);
+/**
+ * Vérification que les options produits ont bien été saisies pas l'utilisateur avant passage de la commande
+ * @param {string} color 
+ * @param {string} quantity 
+ */
+const checkUserOptions = (color, quantity) => {
+    if (color === "") {
+        window.alert(`veuillez selectionner une couleur SVP`);
+    } else {
+        if (quantity < 1 || quantity > 100) {
+            window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
         } else {
-            if (quantity < 1 || quantity > 100) {
-                window.alert(`Veuillez selectionner une quantité entre 1 et 100 SVP`);
-        } else {
-            addItemToCart("key");
-          window.location.replace(`./cart.html`) /* Redirection vers la page panier */
-            }         
-        }  });
+            addItemToCart(urlId, color, quantity);
+            window.location.replace(`./cart.html`) /* Redirection vers la page panier */
+        };         
+    };
+};
 
 
+const urlId = idRecuperation();
+getAPI();
+addEventListener();
