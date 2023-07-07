@@ -1,11 +1,24 @@
-/* JS page linked to confirmation.html */
+/**
+ * Récupération de l'id du canapé depuis l'URL de la page
+ * @return {String} urlId
+ */
+const idRecuperation = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlId = urlParams.get('orderId');
+    return urlId;
+};
 
-/* Récupération du href de la page */
-const url = window.location.href;
-/* Extraction de l'ID depuis le href de la page */
-const urlIdsSplited = url.split('=');
-const urlId = urlIdsSplited[1];
+/**
+ * Affichage des produits dans le DOM
+ * @param {String} urlId
+ */
+const displayOrder = (urlId) => {
+    let spanOrderId = document.querySelector('span');
+    spanOrderId.innerText = urlId;
+}
 
-/* Affichage sur la page */
-let spanOrderId = document.querySelector('span');
-spanOrderId.innerText = urlId;
+
+document.addEventListener('DOMContentLoaded', function(event) {
+   const urlId = idRecuperation();
+    displayOrder(urlId);
+  });
