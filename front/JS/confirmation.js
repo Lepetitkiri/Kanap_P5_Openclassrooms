@@ -14,7 +14,7 @@ const idRecuperation = () => {
  */
 const displayOrder = (urlId) => {
     let spanOrderId = document.querySelector('span');
-    spanOrderId.innerText = urlId;
+    spanOrderId.textContent = urlId;
 }
 
 
