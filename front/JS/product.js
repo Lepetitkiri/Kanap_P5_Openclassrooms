@@ -14,8 +14,8 @@ const idRecuperation = () => {
  */
 const getAPI = () => {
     fetch(`http://localhost:3000/api/products/${urlId}`)
-    .then(response => response.json())
-    .then(product => displayProductPage(product))
+        .then(response => response.json())
+        .then(product => displayProductPage(product))
 };
 
 /**
@@ -46,7 +46,7 @@ const displayProductPage = (product) => {
         let productColor = document.createElement(`option`);
         document.querySelector(`#colors`).appendChild(productColor);
         productColor.textContent = product.colors[i];
-    };    
+    };
 };
 
 /**
@@ -54,15 +54,15 @@ const displayProductPage = (product) => {
  */
 const addEventListener = () => {
     /* Création des variables */
-    let color = ""; 
+    let color = "";
     let quantity = "";
 
     /* Récupération des datas au click sur les balises */
-    document.getElementById(`colors`).addEventListener('change', (e) => { 
-        color = e.target.value; 
+    document.getElementById(`colors`).addEventListener('change', (e) => {
+        color = e.target.value;
     })
-    document.getElementById(`quantity`).addEventListener('change', (e) => { 
-        quantity = e.target.value;  
+    document.getElementById(`quantity`).addEventListener('change', (e) => {
+        quantity = e.target.value;
     });
     /* Ecouteur d'événement pour le bouton "Ajouter au panier" */
     document.getElementById(`addToCart`).addEventListener('click', (e) => {
@@ -82,7 +82,7 @@ addItemToCart = (urlId, color, quantity) => {
 
     /* On compare si il existe déjà cet element au panier : */
     let localStorageExistingKeys = Object.keys(localStorage); /* Pour cela on récupère les elements du local storage sous forme d'array comprenant id / couleur*/
-    let existingItem = localStorageExistingKeys.includes(urlId +" " + color); /* Renvoi un booléen indiquant si le produit est déjà dans le panier ou non */
+    let existingItem = localStorageExistingKeys.includes(urlId + " " + color); /* Renvoi un booléen indiquant si le produit est déjà dans le panier ou non */
 
     if (existingItem) {
         /* si le produit existe dans le panier : */
@@ -109,7 +109,7 @@ const checkUserOptions = (color, quantity) => {
         } else {
             addItemToCart(urlId, color, quantity);
             window.location.replace(`./cart.html`) /* Redirection vers la page panier */
-        };         
+        };
     };
 };
 
