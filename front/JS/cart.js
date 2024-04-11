@@ -16,7 +16,7 @@ getDatas().then(() => {
  */
 async function getDatas(i) {
   const promises = [];
-  
+
   for (i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
 
@@ -48,7 +48,7 @@ async function getDatas(i) {
  * @param {Array.<{color: String, _id: String, name: String, price: Number, imageUrl: String, altTxt: String, quantity: Number}>} cart 
  */
 const displayProducts = (cart) => {
-  cart.forEach(function(cart) {
+  cart.forEach(function (cart) {
     /* Création d'un <article> contenant les infos produit */
     let productArticle = document.createElement("article");
     document.getElementById(`cart__items`).appendChild(productArticle);
@@ -102,7 +102,7 @@ const displayProducts = (cart) => {
     divArticle4.appendChild(divArticle6);
     divArticle6.classList.add("cart__item__content__settings__delete");
     divArticle6.innerHTML = `<p class="deleteItem" id=${cart._id}*${cart.color}>Supprimer</p>`;
-  
+
     /* Création d'un evenement permettant de surveiller les boutons supprimer et de lancer la fonction de suppression */
     let deleteButton = document.getElementById(`${cart._id}*${cart.color}`)
     deleteButton.addEventListener('click', () => {
@@ -120,19 +120,19 @@ function deleteArticle(itemToDeleteDatas) {
   idToDelete = itemToDeleteDatas.split('*')[0];
   colorToDelete = itemToDeleteDatas.split('*')[1];
 
-      /* Suppression de l'elèment du LS et cart */
-      localStorage.removeItem(`${idToDelete} ${colorToDelete}`);
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].color == colorToDelete && cart[i]._id == idToDelete) {
-          cart.splice(i, 1);
-          break;
-        };
-      };
-
-      /* MAJ du DOM comprenant le recalcul du total panier */
-      document.getElementById(`${idToDelete}*${colorToDelete}`).closest('article').remove();
-      cartCalculation(cart);
+  /* Suppression de l'elèment du LS et cart */
+  localStorage.removeItem(`${idToDelete} ${colorToDelete}`);
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].color == colorToDelete && cart[i]._id == idToDelete) {
+      cart.splice(i, 1);
+      break;
+    };
   };
+
+  /* MAJ du DOM comprenant le recalcul du total panier */
+  document.getElementById(`${idToDelete}*${colorToDelete}`).closest('article').remove();
+  cartCalculation(cart);
+};
 
 /**
  * Récupération de id/color associés au produit à supprimer
@@ -215,13 +215,13 @@ document.getElementById(`order`).addEventListener('click', (e) => {
   let cityRegex = /^[0-9]{5}\s[a-zA-Zà-ÿ-\s]+$/;
   let emailRegex = /^[a-zA-Zà-ÿ-]+[@][a-zA-Zà-ÿ-]+[.][a-zA-Zà-ÿ-]{2,3}$/;
 
-/**
- * Fonction de vérification de la validité du format de données renseignées dans le formulaire
- * @param {String} valueToCheck 
- * @param {Regex mask} mask 
- * @param {HTMLElement} domElement 
- * @param {String} errorMessage 
- */
+  /**
+   * Fonction de vérification de la validité du format de données renseignées dans le formulaire
+   * @param {String} valueToCheck 
+   * @param {Regex mask} mask 
+   * @param {HTMLElement} domElement 
+   * @param {String} errorMessage 
+   */
   const formCheking = (valueToCheck, mask, domElement, errorMessage) => {
     if (valueToCheck === "") {
       domElement.innerText = `Veuillez renseigner ce champ`;
@@ -239,16 +239,16 @@ document.getElementById(`order`).addEventListener('click', (e) => {
   };
 
   /* Controle que le cart est bien rempli */
-  cart.length !== 0 
-  ? (
-    e.preventDefault(),
-  formCheking(firstName.value, worldRegex, document.getElementById(`firstNameErrorMsg`), `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`),
-  formCheking(lastName.value, worldRegex, document.getElementById(`lastNameErrorMsg`), `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`),
-  formCheking(address.value, addressRegex, document.getElementById(`addressErrorMsg`), `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`),
-  formCheking(city.value, cityRegex, document.getElementById(`cityErrorMsg`), `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`),
-  formCheking(email.value, emailRegex, document.getElementById(`emailErrorMsg`), `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`),
-  sendCartToApi()) 
-  : (window.alert("Heu... Vous voulez acheter du vent ou quoi ? Ca serait mieux de mettre un ou plusieurs canapés dans votre panier."), e.preventDefault());
+  cart.length !== 0
+    ? (
+      e.preventDefault(),
+      formCheking(firstName.value, worldRegex, document.getElementById(`firstNameErrorMsg`), `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Noemie`),
+      formCheking(lastName.value, worldRegex, document.getElementById(`lastNameErrorMsg`), `OUPS! Veuillez vous limiter aux lettres, accents ou espaces SVP. Exemple : Diop`),
+      formCheking(address.value, addressRegex, document.getElementById(`addressErrorMsg`), `OUPS! Une adresse valide ressemble à ca : 2 rue des ânes`),
+      formCheking(city.value, cityRegex, document.getElementById(`cityErrorMsg`), `OUPS! Veuillez indiquer le code postal suivi de la ville. Exemple : 59283 Moncheaux`),
+      formCheking(email.value, emailRegex, document.getElementById(`emailErrorMsg`), `OUPS! Une adresse e-mail valide ressemble à ca : Noemie.diop@gmail.com`),
+      sendCartToApi())
+    : (window.alert("Heu... Vous voulez acheter du vent ou quoi ? Ca serait mieux de mettre un ou plusieurs canapés dans votre panier."), e.preventDefault());
 
   /**
    * Récupération des datas du formulaire et du cart
@@ -266,12 +266,12 @@ document.getElementById(`order`).addEventListener('click', (e) => {
         },
         products: cartRecuperation,
       };
-  
+
       /* Envoi des datas vers l'API */
       fetchToApi(order);
     }
   };
-  });
+});
 
 /**
  * Envoi de la commande vers l'API
