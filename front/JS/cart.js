@@ -21,7 +21,7 @@ async function getDatas(i) {
     const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
 
     /* Récupération des infos depuis l'API : */
-    const promise = fetch(`http://localhost:3000/api/products/${key.split(' ')[0]}`)
+    const promise = fetch(process.env.BACKEND_URL + `/api/products/${key.split(' ')[0]}`)
       .then(response => response.json())
       /* Création d'un element pour chaque produit du cart */
       .then(response => {
@@ -285,7 +285,7 @@ document.getElementById(`order`).addEventListener('click', (e) => {
  * @param {string} order.products - Informations sur les produits de la commande (sous forme de chaîne de caractères)
  */
 const fetchToApi = (order) => {
-  fetch("http://localhost:3000/api/products/order",
+  fetch(process.env.BACKEND_URL + `/api/products/order",
     {
       method: "POST",
       headers: {
@@ -299,7 +299,7 @@ const fetchToApi = (order) => {
     })
     .then((data) => {
       localStorage.clear();
-      window.location.href = `confirmation.html?orderId=${data.orderId}`;
+      window.location.href = `confirmation.html ? orderId = ${ data.orderId }`;
     })
     .catch((err) => {
       console.error(err);

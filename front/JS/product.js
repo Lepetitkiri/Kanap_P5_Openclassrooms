@@ -13,7 +13,7 @@ const idRecuperation = () => {
  * @return {Object} product
  */
 const getAPI = () => {
-    fetch(`http://localhost:3000/api/products/${urlId}`)
+    fetch(process.env.BACKEND_URL + `/api/products/${urlId}`)
         .then(response => response.json())
         .then(product => displayProductPage(product))
 };

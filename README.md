@@ -46,7 +46,7 @@ cd /Back
 nodemon server
 ```
 
-6. Le message `"[nodemon] starting node server.js Listening on port 3000"` indiquand que le serveur a correctement démarré doit apparaitre.
+6. Le message `"[nodemon] starting node server.js Listening on port 3000"` indiquant que le serveur a correctement démarré doit apparaitre.
 
 5. Dans le dossier `Front/html`, ouvre le fichier `index.html` à l'aide du clic droit puis `Open with Live Server`.
 
