@@ -1,3 +1,5 @@
+import { getBackendUrl } from '../utils.mjs';
+
 /**
  * Récupération de l'id du canapé depuis l'URL de la page
  * @returns {String} urlId
@@ -9,13 +11,15 @@ const idRecuperation = () => {
 };
 
 /**
- * Récupération des produits depuis l'API
- * @return {Object} product
+ * Récupère les produits depuis l'API back-end et affiche la page produit.
+ * Utilise la fonction getBackendUrl pour construire l'URL de l'API en fonction de l'environnement.
+ * @param {string} urlId - L'ID du produit à récupérer
  */
-const getAPI = () => {
-    fetch(process.env.BACKEND_URL + `/api/products/${urlId}`)
+const getAPI = (urlId) => {
+    fetch(getBackendUrl(`api/products/${urlId}`))
         .then(response => response.json())
         .then(product => displayProductPage(product))
+        .catch(error => console.error('Erreur lors de la requête :', error));
 };
 
 /**
@@ -76,7 +80,7 @@ const addEventListener = () => {
  * @param {String} color
  * @param {String} quantity
  */
-addItemToCart = (urlId, color, quantity) => {
+const addItemToCart = (urlId, color, quantity) => {
     let key = `${urlId} ${color}`; /* Clé d'identification du produit  sélectionné */
     let cart = JSON.parse(localStorage.getItem(key)) || []; /* Récupération du panier depuis le local storage, si null, renvoi un array vide */
 
@@ -86,7 +90,7 @@ addItemToCart = (urlId, color, quantity) => {
 
     if (existingItem) {
         /* si le produit existe dans le panier : */
-        existingItemQuantity = parseInt(cart) + parseInt(quantity); /* Modification de la quantité */
+        let existingItemQuantity = parseInt(cart) + parseInt(quantity); /* Modification de la quantité */
         localStorage.setItem(key, JSON.stringify(existingItemQuantity)); /* Enregistrement dans le local storage */
     } else {
         /* si le produit n'existe pas encore dans le panier : */
@@ -115,5 +119,5 @@ const checkUserOptions = (color, quantity) => {
 
 
 const urlId = idRecuperation();
-getAPI();
+getAPI(urlId);
 addEventListener();

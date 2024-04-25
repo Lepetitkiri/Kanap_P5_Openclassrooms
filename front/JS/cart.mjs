@@ -3,6 +3,7 @@ let idOfModifyArticle; /* Id d'un article à modifier */
 let colorOfModifyArticle; /* Couleur d'un article à modifier */
 let quantiOfToModifyArticle; /* Quantité d'un article à modifier */
 let newQuantityOfModifyArticle; /* Nouvelle quantité d'un article à modifier */
+import { getBackendUrl } from '../utils.mjs';
 
 getDatas().then(() => {
   displayProducts(cart);
@@ -21,7 +22,7 @@ async function getDatas(i) {
     const key = localStorage.key(i); /* Récupération de l'ensemble des clés contenues dans le local storage */
 
     /* Récupération des infos depuis l'API : */
-    const promise = fetch(process.env.BACKEND_URL + `/api/products/${key.split(' ')[0]}`)
+    const promise = fetch(getBackendUrl(`api/products/${key.split(' ')[0]}`))
       .then(response => response.json())
       /* Création d'un element pour chaque produit du cart */
       .then(response => {
@@ -117,8 +118,8 @@ const displayProducts = (cart) => {
  */
 function deleteArticle(itemToDeleteDatas) {
   /* Récupération de l'id et de la couleur du produit à supprimer */
-  idToDelete = itemToDeleteDatas.split('*')[0];
-  colorToDelete = itemToDeleteDatas.split('*')[1];
+  let idToDelete = itemToDeleteDatas.split('*')[0];
+  let colorToDelete = itemToDeleteDatas.split('*')[1];
 
   /* Suppression de l'elèment du LS et cart */
   localStorage.removeItem(`${idToDelete} ${colorToDelete}`);
@@ -141,7 +142,7 @@ function deleteArticle(itemToDeleteDatas) {
 function getDatasFromModifyArticle(divArticle2) {
 
   /* Récupération de id/color associés au produit supprimé */
-  classNameOfModifyArticle = divArticle2.className; /* Récupération de la class */
+  let classNameOfModifyArticle = divArticle2.className; /* Récupération de la class */
   idOfModifyArticle = classNameOfModifyArticle.split('-')[2].split(' ')[0];
   colorOfModifyArticle = classNameOfModifyArticle.split(' ')[2].split('=')[1].split('-')[1];
 
@@ -285,7 +286,7 @@ document.getElementById(`order`).addEventListener('click', (e) => {
  * @param {string} order.products - Informations sur les produits de la commande (sous forme de chaîne de caractères)
  */
 const fetchToApi = (order) => {
-  fetch(process.env.BACKEND_URL + `/api/products/order",
+  fetch(getBackendUrl(`/api/products/${order}`),
     {
       method: "POST",
       headers: {
@@ -299,7 +300,7 @@ const fetchToApi = (order) => {
     })
     .then((data) => {
       localStorage.clear();
-      window.location.href = `confirmation.html ? orderId = ${ data.orderId }`;
+      window.location.href = `confirmation.html ? orderId = ${data.orderId}`;
     })
     .catch((err) => {
       console.error(err);

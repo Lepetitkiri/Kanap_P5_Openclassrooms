@@ -1,12 +1,15 @@
+import { getBackendUrl } from '../utils.mjs';
+
 /**
- * Récupération des produits depuis l'API
- * @return {Object} product
+ * Récupère les produits depuis l'API back-end et les affiche.
+ * Utilise la fonction getBackendUrl pour construire l'URL de l'API en fonction de l'environnement.
  */
 const getAPI = () => {
-    fetch(process.env.BACKEND_URL + `/api/products`)
+    fetch(getBackendUrl('api/products'))
         .then(response => response.json())
-        .then(product => displayProducts(product));
-}
+        .then(products => displayProducts(products))
+        .catch(error => console.error('Erreur lors de la requête :', error));
+};
 
 /**
  * Affichage des produits dans le DOM
