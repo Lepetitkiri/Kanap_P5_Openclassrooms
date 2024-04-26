@@ -1,5 +1,5 @@
-const uuid = require('uuid/v1');
-const Product = require('../models/Product');
+import uuid from 'uuid/v1';
+import Product from '../models/Product';
 
 exports.getAllProducts = (req, res, next) => {
   Product.find().then(

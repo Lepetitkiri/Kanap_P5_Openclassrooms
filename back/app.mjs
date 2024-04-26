@@ -1,7 +1,7 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 
-const productRoutes = require('./routes/product');
+import productRoutes from './routes/product';
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static('images'));
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
