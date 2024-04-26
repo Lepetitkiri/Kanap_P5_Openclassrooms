@@ -1,5 +1,5 @@
-import http from 'http';
-import app from './app';
+http = require('http');
+app = require('./app');
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -12,6 +12,7 @@ const normalizePort = val => {
   }
   return false;
 };
+
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 

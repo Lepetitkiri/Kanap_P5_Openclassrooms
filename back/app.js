@@ -1,7 +1,7 @@
-import express from 'express';
-import path from 'path';
+const express = require('express');
+const path = require('path');
 
-import productRoutes from './routes/product';
+const productRoutes = require('./routes/product.js');
 
 const app = express();
 
