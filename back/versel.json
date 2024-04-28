@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "kanap-p5-openclassrooms-api",
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/products/?(.*)",
+            "dest": "/api/products/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+}
